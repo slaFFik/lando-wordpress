@@ -1,0 +1,42 @@
+name: wordpress
+recipe: wordpress
+config:
+  php: '7.2'
+  via: apache:2.4
+  webroot: wordpress
+  database: mysql:5.7
+  xdebug: true
+services:
+  appserver:
+    build:
+      - |
+        /helpers/get-remote-url.sh https://wordpress.org/latest.tar.gz
+        echo -n "apache_modules:\n  - mod_rewrite" > "wordpress/wp-cli.yml"
+    run:
+      - |
+        cd wordpress
+        wp config create --dbname="wordpress" --dbuser="wordpress" --dbpass="wordpress" --dbhost="database" --dbprefix="wp_"
+        wp core install --url="https://wordpress.lndo.site" --title="Test" --admin_user="admin" --admin_password="admin" --admin_email="admin@wordpress.lndo.site" --skip-email
+        wp rewrite structure '/%postname%/' --hard
+        wp plugin uninstall hello akismet
+        wp plugin install query-monitor --activate
+  phpmyadmin:
+    type: phpmyadmin
+    ssl: true
+    sslExpose: false
+    hosts:
+      - database
+  mailhog:
+    type: mailhog
+    ssl: true
+    sslExpose: false
+    hogfrom:
+      - appserver
+tooling:
+  wp:
+    cmd: "wp --path=wordpress"
+proxy:
+  phpmyadmin:
+    - db.wordpress.lndo.site
+  mailhog:
+    - mail.wordpress.lndo.site

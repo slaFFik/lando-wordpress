@@ -19,9 +19,9 @@ lando start
 
 ## URLs
 All URLs have both http and https versions.
-- `wordpress.lndo.test` - WordPress
-- `db.wordpress.lndo.test` - PHPMyAdmin
-- `mail.wordpress.lndo.test` - Mailhog
+- `wordpress.lndo.site` - WordPress
+- `db.wordpress.lndo.site` - PHPMyAdmin
+- `mail.wordpress.lndo.site` - Mailhog
 
 ## Trusting the CA
 ### MacOS

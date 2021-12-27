@@ -1,11 +1,11 @@
 name: wordpress
 recipe: wordpress
 config:
-  php: '7.2'
+  php: '7.4'
   via: apache:2.4
   webroot: wordpress
   database: mysql:5.7
-  xdebug: true
+  xdebug: false
 services:
   appserver:
     build:
